@@ -1,0 +1,9 @@
+useref: Keeps a reference to a DOM element or a value that doesn't trigger re-renders.
+
+useMemo: Saves a calculated value and only recalculates it when the dependencies change. Helps to avoid unnecessary recalculations.
+
+useCallback: Memoizes a function so it doesn't get recreated on every render, useful when passing functions to child components.
+
+useReducer: Used for more complex state management, like handling multiple state changes based on actions, similar to Redux.
+
+useState: Adds state to a functional component. You can get the current state value and a function to update it.

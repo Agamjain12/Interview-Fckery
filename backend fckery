@@ -1,0 +1,25 @@
+How do you ensure high availability in your backend system?
+Answer:
+Use load balancers to distribute traffic across multiple servers.
+Deploy the application across multiple availability zones or regions in cloud platforms.
+Implement database replication with failover support (e.g., PostgreSQL replication).
+Use circuit breakers and retries to handle service failures gracefully.
+Add health checks and rolling updates during deployments.
+
+
+How would you debug a slow API endpoint?
+Answer:
+Profile the API using tools like New Relic, Postman, or Datadog to measure response times.
+Check Database Queries:
+Use EXPLAIN or EXPLAIN ANALYZE to identify slow SQL queries.
+Add indexes or optimize queries.
+Inspect Logs for errors or bottlenecks.
+Load Test using tools like JMeter or k6 to simulate traffic.
+Optimize code, add caching (e.g., Redis), or enable compression (e.g., gzip).
+
+
+What is a trigger in SQL?
+Answer:
+Trigger: A database object that automatically executes or fires when certain events occur in a table or view (e.g., INSERT, UPDATE, DELETE).
+Use Case: For example, updating a log table every time a record is updated in a user table.
+

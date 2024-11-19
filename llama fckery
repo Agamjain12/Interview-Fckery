@@ -1,0 +1,49 @@
+llama-2: same as gpt-3, pretrained language model (i want french) -> toast
+llama-2 chat: same as chatgpt finetuned chatbot that has RLHF(reinforcement learning through human feedback).
+
+run llama 3.1 in cloud using groqcloud, the inference (time getting the answer back) is really low, use chromadb as vector database
+
+Hugging Face’s Transformers library and PyTorch for model fine-tuning.
+
+ollama serve
+ollama pull llama version
+ollama run llama version
+
+
+1. Explain the difference between supervised and unsupervised learning.
+Answer:
+
+Supervised learning involves training a model on labeled data, where each input is associated with a specific output. The goal is for the model to learn the mapping between inputs and outputs to predict labels for unseen data. Examples include classification and regression tasks.
+Unsupervised learning involves training on unlabeled data, where the model identifies patterns or groupings without specific guidance. Common techniques include clustering and dimensionality reduction.
+
+**Inference**: In general, inference refers to the process of making conclusions or making predictions from a set of data, using a statistical model, a set of rules, or other mathematical frameworks. Inference is about drawing logical conclusions based on what you know about a system, process, or phenomenon.
+
+
+2. What is overfitting, and how can it be prevented?
+Answer:
+Overfitting occurs when a model learns the training data too well, capturing noise or outliers, which leads to poor generalization on new data. It can be prevented using:
+
+Regularization (like L1/L2 regularization)
+Dropout in neural networks
+Cross-validation to check the model's performance across multiple datasets
+
+1. Basics of Llama and Ollama
+Llama is a powerful language model created by Meta. Think of it as a smart text tool that can understand and generate language for tasks like answering questions, summarizing information, or chatting with users.
+Ollama is a tool that helps you use Llama on your own computer instead of relying on cloud servers. It’s great for privacy and can be cheaper since you don’t need to pay for cloud resources.
+How to Present: Say that Llama is versatile for language-related tasks and Ollama makes it easy to use Llama on your own setup, which is helpful for keeping data private.
+
+2. Setting Up and Running Models Locally
+Setting Up Llama: When using Llama, you need to set up a few things like specific software (libraries such as transformers and pytorch) and maybe even GPU support for faster processing.
+Using Ollama: Ollama is installed on your computer, and you can run models with a simple command like ollama run. It helps control how much memory the model uses so it doesn’t slow down your computer.
+
+1. Transformers
+Transformers is a library by Hugging Face that provides tools to work with pre-trained language models like Llama.
+
+Project Overview:
+In my previous role, I developed a Customer Support Assistant powered by Llama to help a financial services company handle common customer queries and provide information on their products, services, and policies. The goal was to create a highly responsive, privacy-compliant virtual assistant that could reduce the load on human agents and ensure customer data privacy.
+
+My Role and Approach:
+Data Preparation and Fine-Tuning Llama for Contextual Responses
+
+I began by gathering and preprocessing relevant data, such as past customer inquiries, FAQs, and company policy documents.
+Using Hugging Face’s Transformers library and PyTorch, I fine-tuned the Llama model to understand and respond to typical customer questions related to finance, such as “What are the interest rates for savings accounts?” or “How can I apply for a loan?”

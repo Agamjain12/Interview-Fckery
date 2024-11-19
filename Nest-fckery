@@ -1,0 +1,36 @@
+Nest
+What is the role of the Nestjs Execution Context in request processing?
+The Execution Context provides access to the current request and response objects, allowing you to inspect request context. 
+
+What is a module in NestJS, and why is it essential?
+
+Answer: Modules are the building blocks in NestJS, grouping related components (controllers, services) together. Every NestJS app has at least one root module.
+
+How do you handle validation in NestJS?
+
+Answer: Validation is typically handled using pipes with libraries like class-validator and class-transformer. Validation pipes are used to check request data before it reaches the controller.
+
+
+middlewares -> pipes -> guards -> (interceptors) -> route handlers -> (interceptors)
+
+Middleware
+Purpose: Middleware is primarily used for modifying requests globally or for specific routes, often for tasks like logging, authentication, or modifying headers.
+Functionality: Middleware runs before all other route processing components. It can read and modify requests but typically does not end a request cycle.
+Execution: Middleware executes before any NestJS-specific components (like guards, pipes, and interceptors), as it is part of the basic request-response cycle.
+Example: Logging middleware to log requests.
+
+pipes: validatation and transformation of data. 
+guards: authorization
+interceptors: transforming request/response object, logging, error handelling. 
+
+
+Dependency injection (DI) in NestJS is a design pattern that enables the automatic management of dependencies within your application. Instead of creating instances of classes manually, DI lets you define dependencies that are automatically injected by NestJS's Inversion of Control (IoC) container.
+
+
+Explain the concept of Validation Pipes in Nest.js
+Validation pipes are used to automatically validate incoming data against defined DTOs, ensuring data integrity. 
+
+
+What are DTOs in Nest.js
+DTOs are used to define the shape of data send and received by APIs, helping to validate and document data structures. 
+

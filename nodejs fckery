@@ -1,0 +1,167 @@
+How does Node.js handle concurrency with its single-threaded model?
+Answer:
+Node.js uses the event loop to handle concurrency. While Node.js is single-threaded, it offloads I/O operations to the thread pool (via libuv) or system APIs, and continues executing other JavaScript code without blocking. The event loop picks up completed tasks and their associated callbacks to execute on the main thread.
+
+
+
+Single-Threaded Behavior of Node.js
+Node.js operates on a single-threaded event loop architecture, meaning it uses one thread to handle all incoming requests.
+Unlike traditional multi-threaded systems, where each request gets a new thread, Node.js processes requests asynchronously in the same thread.
+
+How Does Node.js Work?
+Receiving Requests:
+
+Node.js listens for client requests (like API calls).
+Requests can involve tasks such as reading files, querying a database, or sending a response.
+
+Event Loop:
+
+The event loop is the core mechanism that allows Node.js to handle multiple requests concurrently without needing multiple threads.
+It continuously checks for tasks to execute.
+
+
+Tasks that take time (e.g., file I/O, database queries) are delegated to background workers (managed by the libuv library).
+Once the background worker completes the task, a callback or promise is added to the event loop to finish the job.
+
+Non-Blocking I/O:
+
+Node.js does not wait for one task to complete before starting another. It doesn't block the main thread, allowing it to handle other requests while waiting for results.
+
+
+What is a Promise in JavaScript?
+
+A Promise is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. It helps manage asynchronous code by avoiding callback hell and improving readability.
+
+A Promise can have one of the following three states:
+
+Pending: The initial state, neither fulfilled nor rejected.
+Fulfilled: The operation completed successfully, and a value is available.
+Rejected: The operation failed, and a reason (error) is available.
+
+
+Promise.all()
+
+Takes an array of promises and resolves when all promises are fulfilled.
+If any promise is rejected, it immediately rejects.
+
+
+Promise.race()
+
+Resolves or rejects as soon as the first promise in the array settles.
+
+Promise.any()
+Resolves with the first fulfilled promise from an array of promises.
+If all promises are rejected, it rejects with an AggregateError that contains all the rejection reasons.
+
+Promise.allSettled()
+Waits for all promises in an array to settle, either fulfilled or rejected.
+Returns an array of objects with
+
+
+process.nextTick(): Executes callbacks immediately after the current operation completes, before any I/O events or timers.
+
+setImmediate(): Executes callbacks on the next iteration of the event loop after I/O events.
+
+What are streams in Node.js?
+Answer:
+Streams are objects that enable reading or writing data in chunks, making them ideal for handling large data efficiently.
+Types of Streams:
+Readable: For reading data.
+Writable: For writing data.
+Duplex: For both reading and writing.
+Transform: Modifies or transforms data.
+
+What is the difference between readFile and createReadStream?
+Answer:
+readFile: Reads the entire file into memory, suitable for small files.
+createReadStream: Reads the file in chunks, ideal for large files to save memory.
+
+What are the core modules in Node.js?
+Answer:
+Some common core modules:
+fs: File system
+http: HTTP server and client
+path: File path utilities
+os: Operating system info
+events: EventEmitter class
+crypto: Encryption and decryption
+
+Explain the concept of clustering in Node.js.
+Answer:
+Clustering enables creating multiple processes (workers) that share the same server port to improve application performance and utilize multi-core systems.
+
+Horizontal Scaling
+Add more servers to distribute the load.
+Use a load balancer (e.g., NGINX, AWS Elastic Load Balancer) to evenly distribute incoming traffic across servers.
+
+
+What is middleware chaining in Express.js?
+Answer:
+Middleware chaining refers to passing control from one middleware to another using the next() function.
+
+
+What is CORS and how do you handle it in Node.js?
+Answer:
+CORS (Cross-Origin Resource Sharing) is a security feature that allows or restricts resources on a web page to be requested from another domain.
+
+
+What is the purpose of async_hooks in Node.js?
+Answer:
+The async_hooks module tracks the lifecycle of asynchronous operations in Node.js, which is useful for debugging or performance monitoring.
+
+
+
+libuv is a C library that provides Node.js with its event loop and thread pool. It handles I/O operations, timers, and file systems in a non-blocking way.
+
+
+What is piping in Node.js?
+Piping is a mechanism used to connect the output of one stream to another stream. It is normally used to retrieve data from one stream and pass output to another stream
+
+What is a fork in node JS?
+The Fork method in Node.js creates a new child process that runs a separate Node.js instance and can be useful for running CPU-intensive tasks or creating a cluster of Node.js servers.
+
+
+This object exposes, among many others, the on and emit methods.
+
+The Node.js Event emitter
+If you worked with JavaScript in the browser, you know how much of the interaction of the user is handled through events: mouse clicks, keyboard button presses, reacting to mouse movements, and so on.
+
+On the backend side, Node.js offers us the option to build a similar system using the events module.
+
+This module, in particular, offers the EventEmitter class, which we'll use to handle our events.
+
+emit is used to trigger an event
+on is used to add a callback function that's going to be executed when the event is triggered
+
+
+1. Microtask Queue
+What is it?
+A high-priority queue used to schedule short, immediate tasks that should run as soon as the currently executing code finishes.
+
+Examples of Microtasks:
+
+Promises (.then, .catch, .finally)
+process.nextTick() (Node.js-specific)
+MutationObserver
+Behavior:
+Once the currently executing script (or function) finishes, all the tasks in the microtask queue are executed before moving to the macrotask queue.
+
+Use Case:
+For operations that need to be executed as soon as possible without waiting for the next event loop cycle.
+
+2. Macrotask Queue
+What is it?
+A queue for lower-priority, larger tasks that are scheduled to run in the next iteration of the event loop.
+
+Examples of Macrotasks:
+
+setTimeout
+setInterval
+setImmediate (Node.js-specific)
+I/O callbacks (like file reading in Node.js)
+UI rendering tasks (browser-specific)
+Behavior:
+Once the microtask queue is empty, the event loop moves to the macrotask queue and processes its tasks.
+
+Use Case:
+For operations that can wait until the next cycle of the event loop, like rendering updates or delayed actions.

@@ -1,0 +1,131 @@
+import React, { useState, useEffect } from "react";
+import { View, Image, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import * as tf from "@tensorflow/tfjs";
+import * as tfReactNative from "@tensorflow/tfjs-react-native";
+import * as deeplab from "@tensorflow-models/deeplab";
+
+interface WallCanvasProps {
+  imageUri: string;
+  selectedColor: string | null;
+}
+
+interface Wall {
+  id: number;
+  path: string; // SVG path data representing the wall shape
+  color: string; // Current color of the wall
+}
+
+const WallCanvas: React.FC<WallCanvasProps> = ({ imageUri, selectedColor }) => {
+  const [walls, setWalls] = useState<Wall[]>([]);
+  console.log("Image URI:", imageUri);
+  console.log("Selected Color:", selectedColor);
+
+  useEffect(() => {
+    const loadAndSegmentImage = async () => {
+      console.log("Initializing TensorFlow.js for React Native...");
+      try {
+        // Initialize TensorFlow.js for React Native
+        await tf.ready();
+        console.log("TensorFlow.js initialized");
+
+        console.log("Loading DeepLab model...");
+        const model = await deeplab.load({
+          base: "pascal",
+          quantizationBytes: 2,
+        });
+        console.log("DeepLab model loaded");
+
+        // Fetch and decode the image as a tensor
+        const response = await fetch(imageUri);
+        const arrayBuffer = await response.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+
+        const imgTensor = tfReactNative.decodeJpeg(uint8Array);
+        console.log("Image loaded and decoded into tensor");
+
+        // Resize the image tensor to 256x256 to reduce memory usage
+        const resizedImgTensor = tf.image.resizeBilinear(imgTensor, [256, 256]);
+        imgTensor.dispose(); // Dispose of the original, larger tensor
+
+        // Segment the image to get wall regions
+        const segmentation = await model.segment(resizedImgTensor);
+        console.log("Segmentation result:", segmentation);
+
+        const segmentationMap = new Uint8Array(
+          segmentation.segmentationMap.buffer
+        );
+        console.log("Segmentation map processed");
+
+        const wallClassId = 15; // Wall class ID for DeepLab PASCAL model
+
+        // Convert wall regions into SVG path data
+        const newWalls = createWallPaths(segmentationMap, wallClassId);
+        console.log("Generated walls:", newWalls);
+        setWalls(newWalls);
+      } catch (error) {
+        console.error("Error during model loading or segmentation:", error);
+      }
+    };
+
+    if (imageUri) {
+      loadAndSegmentImage();
+    }
+  }, [imageUri]);
+
+  const createWallPaths = (
+    segmentationMap: Uint8Array,
+    wallClassId: number
+  ): Wall[] => {
+    const paths: Wall[] = [];
+    console.log("Creating wall paths...");
+    for (let y = 0; y < segmentationMap.length; y++) {
+      if (segmentationMap[y] === wallClassId) {
+        const pathData = `M${y * 10} ${y * 10} H ${(y + 1) * 10} V ${
+          (y + 1) * 10
+        } H ${y * 10} Z`;
+        paths.push({ id: y, path: pathData, color: "white" });
+      }
+    }
+    console.log("Paths generated:", paths);
+    return paths;
+  };
+
+  const handleWallPress = (id: number) => {
+    console.log(`Wall ${id} pressed`);
+    if (selectedColor) {
+      setWalls((prevWalls) =>
+        prevWalls.map((wall) =>
+          wall.id === id ? { ...wall, color: selectedColor } : wall
+        )
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Display image */}
+      <Image source={{ uri: imageUri }} style={styles.image} />
+
+      {/* SVG overlay for dynamically identified wall paths */}
+      <Svg style={StyleSheet.absoluteFill} viewBox="0 0 300 400">
+        {walls.map((wall) => (
+          <Path
+            key={wall.id}
+            d={wall.path}
+            fill={wall.color}
+            onPress={() => handleWallPress(wall.id)}
+          />
+        ))}
+      </Svg>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: "center", justifyContent: "center" },
+  image: { position: "absolute", width: "100%", height: "100%" },
+});
+
+export default WallCanvas;
+

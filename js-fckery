@@ -1,0 +1,125 @@
+Single-Threaded Behavior of JavaScript
+JavaScript operates on a single-threaded model, meaning it can execute one task at a time. This single-threaded nature is primarily due to its origin as a language designed for web browsers, where simplicity and interaction responsiveness were crucial.
+
+Key Concepts:
+
+Call Stack:
+
+JavaScript uses a call stack to manage function execution.
+When a function is called, it’s added to the top of the stack. Once completed, it’s removed.
+The call stack ensures that only one function is executing at any given time.
+Blocking Operations:
+
+Since JavaScript is single-threaded, long-running tasks (like file I/O or network requests) can block the call stack, leading to unresponsive applications.
+To avoid this, asynchronous programming is essential.
+Event Loop
+The event loop is a critical component in JavaScript that enables non-blocking asynchronous operations despite the single-threaded nature.
+
+How It Works:
+
+Call Stack and Web APIs:
+
+When an asynchronous operation (like a setTimeout or an HTTP request) is called, it’s handed off to Web APIs (or Node.js APIs), freeing the call stack.
+Callback Queue:
+
+Once the asynchronous operation is complete, its callback function is placed in the callback queue.
+Event Loop:
+
+The event loop constantly checks if the call stack is empty.
+If the call stack is clear, the event loop pushes the first function from the callback queue onto the call stack for execution.
+
+Explain the concept of Streams in Node.js.
+
+Answer: Streams in Node.js are instances of EventEmitter and can be readable, writable, or both (duplex). They allow handling data in chunks, making it efficient for reading/writing large files or network requests.
+
+
+promises: 
+A promise in JavaScript is an object representing the eventual completion or failure of an asynchronous operation.
+
+
+Object.keys()
+Object.keys() iterates over an object’s own enumerable properties, returning an array containing the keys of those properties.
+
+Example: To demonstrate the implementation of the Object.Keys() method in JavaScript.
+
+
+
+
+
+const obj = {
+    name: 'John',
+    age: 30,
+    city: 'New York'
+};
+
+const keys = Object.keys(obj);
+console.log(keys);
+
+Output
+[ 'name', 'age', 'city' ]
+Object.entries()
+Object.entries() iterates over an object’s own enumerable string-keyed property [key, value] pairs, returning an array of arrays.
+
+Example: To demonstrate the implementation of the Object.entries() method in JavaScript.
+
+
+
+
+
+const obj = {
+    name: 'John',
+    age: 30,
+    city: 'New York'
+};
+
+const entries = Object.entries(obj);
+console.log(entries);
+
+
+Differences between Array.every() and Array.some()
+Array.every()	Array.some()
+The Array.every() method is used to check whether all the elements of the array satisfy the given condition or not.	The Array.some() method is used to check whether at least one of the elements of the array satisfies the given condition or not.
+The every() method will return true if all predicates are true	The  some() method will return true if any predicate is true
+This method executes a function for each array element.	This method does not execute the function for empty array elements.
+This method does not execute the function for empty elements.	This method does not change the original array.
+This method does not change the original array	Its return value is of Boolean type
+Its Syntax is:
+
+array.every(function(value, index, array), thisValue)
+
+Its syntax is:
+
+array.some(function(value, index, array), this)
+
+Its supported browsers are:
+
+Chrome, Internet Explorer 9 – 11, Firefox, Safari, Microsoft Edge, Opera
+
+Its supported browsers are:
+
+Chrome, Internet Explorer, Firefox, Safari, Microsoft Edge, Opera
+
+
+
+
+In JavaScript, the find and filter methods are both used to search through arrays, but they work differently:
+
+find: Returns the first element that satisfies the provided condition. It stops searching once it finds a match and returns undefined if no match is found.
+
+javascript
+
+const numbers = [1, 2, 3, 4];
+const found = numbers.find(num => num > 2); // Output: 3
+filter: Returns a new array containing all elements that satisfy the condition. It continues searching through the entire array.
+
+javascript
+
+const numbers = [1, 2, 3, 4];
+const filtered = numbers.filter(num => num > 2); // Output: [3, 4]
+So, find is for finding a single item, while filter is for finding multiple items.
+
+
+
+
+
+

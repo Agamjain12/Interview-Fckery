@@ -1,0 +1,192 @@
+psycopg2-binary library: which is a popular PostgreSQL adapter for Python
+
+What is PEP 8?
+The Python Enhancement Proposal, also known as PEP 8, is a document that provides instructions on how to write Python code. In essence, it is a set of guidelines for formatting Python code for maximum readability. Guido van Rossum, Barry Warsaw, and Nick Coghlan wrote it in 2001.
+
+named blocks of code 
+
+connection = psycopg2.connect(
+    dbname="my_database",
+    user="my_user",
+    password="my_password",
+    host="localhost"
+)
+
+cursor = connection.cursor()
+cursor.execute("SELECT version();")
+
+What are the key differences between Python 2 and Python 3?
+
+Python 3 is the future version of Python, with better Unicode support, new syntax features, and improved performance. Key differences include:
+print is a function in Python 3 (print("Hello")), while in Python 2, it's a statement (print "Hello").
+Integer division in Python 3 returns a float (e.g., 5 / 2 == 2.5), whereas in Python 2, it returns an integer (e.g., 5 / 2 == 2).
+
+
+What is the purpose of the yield keyword in Python?
+
+yield is used in functions to return a value and pause the function’s execution, allowing it to resume later, making it a generator function.
+
+
+What are Python's built-in data types?
+
+Python’s built-in data types include:
+Numeric types: int, float, complex
+Sequence types: list, tuple, range
+Text type: str
+Mapping type: dict
+Set types: set, frozenset
+Boolean type: bool
+Binary types: bytes, bytearray, memoryview
+
+What is the difference between deepcopy() and copy() in Python?
+
+copy() creates a shallow copy of an object, meaning it copies the reference to objects within it. deepcopy() creates a new object and recursively copies all objects within it, meaning no references are shared.
+
+
+What are Python generators and how do they differ from iterators?
+
+Generators are functions that yield values one at a time, using the yield keyword. They are a more memory-efficient way to create iterators, as they don't store all values in memory at once.
+
+
+What is the purpose of the with statement in Python?
+
+The with keyword in Python is used for handling resources such as files, network connections, or database connections, ensuring that they are properly cleaned up after use. It simplifies the process of working with resources that require setup and teardown (like closing a file or releasing a lock). The with statement automatically takes care of entering and exiting the context in which the resource is used, even if an error occurs.
+
+The with keyword is often used in conjunction with context managers, which are objects that define the methods __enter__() and __exit__(). The __enter__() method is called when the with block is entered, and __exit__() is called when the block is exited, regardless of whether an exception was raised.
+
+
+
+What are Python’s built-in functions for handling files?
+
+Built-in file handling functions include open(), read(), write(), close(), and methods like readlines(), seek(), flush(), and tell().
+
+
+Explain the concept of a class method, static method, and instance method in Python.
+
+Instance method: A regular method that takes the instance (self) as the first argument.
+Class method: A method that takes the class (cls) as the first argument and is defined with @classmethod.
+Static method: A method that doesn't take self or cls as the first argument and is defined with @staticmethod.
+
+
+
+List	Tuple	Set	Dictionary
+
+A list is a non-homogeneous data structure that stores the elements in columns of a single row or multiple rows.
+
+A Tuple is a non-homogeneous data structure that stores elements in columns of a single row or multiple rows.
+
+The set data structure is non-homogeneous but stores the elements in a single row.
+
+A dictionary is also a non-homogeneous data structure that stores key-value pairs.
+
+The list can be represented by [ ]
+
+A tuple can be represented by  ( )
+
+The set can be represented by { }
+
+The dictionary can be represented by { }
+
+The list allows duplicate elements
+
+Tuple allows duplicate elements
+
+The Set will not allow duplicate elements
+
+The dictionary doesn’t allow duplicate keys.
+
+The list can be nested among all
+
+A tuple can be nested among all
+
+The set can be nested among all
+
+The dictionary can be nested among all
+
+Example: [1, 2, 3, 4, 5]
+
+Example: (1, 2, 3, 4, 5)
+
+Example: {1, 2, 3, 4, 5}
+
+Example: {1: “a”, 2: “b”, 3: “c”, 4: “d”, 5: “e”}
+
+A list can be created using the list() function
+
+Tuple can be created using the tuple() function.
+
+A set can be created using the set() function
+
+A dictionary can be created using the dict() function.
+
+A list is mutable i.e we can make any changes in the list.
+
+A tuple is immutable i.e we can not make any changes in the tuple.
+
+A set is mutable i.e we can make any changes in the set, its elements are not duplicated.
+
+A dictionary is mutable, its Keys are not duplicated.
+
+List is ordered
+
+Tuple is ordered
+
+Set is unordered
+
+Dictionary is ordered (Python 3.7 and above)
+
+Creating an empty list
+
+l=[]
+
+Creating an empty Tuple
+
+t=()
+
+Creating a set
+
+a=set()
+b=set(a)
+
+Creating an empty dictionary
+
+d={}
+
+
+The zip() function in Python is used to combine multiple iterables (like lists, tuples, or strings) into a single iterable of tuples, where each tuple contains elements from each of the original iterables at the same index. It’s often used when you want to pair elements from two or more lists.
+
+Key Points about zip():
+Combines Elements by Index: zip() pairs elements by their positions in the iterables.
+Shortest Length Rule: It stops once the shortest iterable is exhausted, so the output length matches the shortest input.
+Produces an Iterator: zip() returns an iterator of tuples, which you can convert into a list or another structure if needed.
+
+remove() Function
+Purpose: Deletes an item by value from a list.
+Syntax: list.remove(value)
+Behavior: It searches for the first occurrence of the specified value and removes it.
+
+del(pop) Statement
+Purpose: Deletes an item by index, slices, or deletes entire variables.
+Syntax: del list[index] or del list[start:end] or del variable
+Behavior: Directly removes the specified index or slice from a list, or deletes the entire variable.
+
+What is swapcase() function in Python?
+The "swapcase()" function in Python is a string method that creates a new string, having characters that are uppercase converted to lowercase and those that are lowercase converted to uppercase. In no other words, it switches the case of every character in the string. The original string would be unaltered.
+
+How to remove whitespaces from a string in Python?
+To eliminate the whitespaces and following spaces from the string, Python provides strip([str]) worked in capability. After removing any whitespaces that may be present, this function returns a copy of the string. If not, returns the original string.
+
+How to create a Unicode string in Python?
+In Python 3, the old Unicode type has been replaced by "str" type, and the string is treated as Unicode of course. Using the art.title.encode("utf-8") function, we can create a Unicode string.
+
+
+How is memory managed in Python?
+Memory management in Python is handled by the Python runtime environment and involves several key components and techniques:
+
+Automatic Memory Management: The Python is able to keeps the account for memory allocation and re-use through the automatic memory management or garbage collection. Therefore, memory allocation and release happen automatically by the Python interpreter at runtime, which is actually a feature.
+Reference Counting: By using reference count python keeps trace of number of references to the each objects. In each Python object a reference count is there which is the count of current references to the object and is increased by new references and decreased when a reference goes out of scope or by explicit deletion. When the referencing count falls to zero an object loses its memory allocated in this way because the count is zero.
+Garbage Collection: Besides regarding of the reference counting concept, Python uses garbage collection for recovering of the object memory area of not-fully-referenced objects such as circular dependencies or cyclic references. Garbage collection scans the heap frequently to identify objects discarded and before the area is cleared to serve as a buffer for current objects.
+Memory Pool: Python enforces a memory pool to perform optimally in terms of allocating and releasing memory for little objects. The memory pool allows memory allocations and deallocations to not frequently happen by reusing this pool's memory block.
+Dynamic Allocation: Objects belong to the data types such as integers, strings, and more, which are called as data types. Python is a dynamic language that has the ability to allocate memory as needed during program execution. Memory, stating that it was acquired for the process heap, is handled by the Python runtime environment.
+Optimizations: What Python's code optimization can offer is manyfold. Firstly, Python interns small integers and strings, which optimizes the memory usage and improves the performance, thereby disposing the duplicate objects from being created in the memory. Secondly, Python senses the reachable and unreachable objects and reclaims memory occupied by the unreachable ones.
+

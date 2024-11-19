@@ -1,0 +1,217 @@
+                                   MULTITHREADING
+
+multithreading does not work for cpu bound task such as mathematical calculation, but they do work for I/O bound operations. so when a I/O bound task such as time.sleep() is called on any thread, the GIL(global interpreter lock) is released by the thread so other thread can take over now 
+
+import time
+import threading 
+
+def cal_square(nums):
+    print("calculating square")
+    for n in nums:
+        time.sleep(0.2)
+        print("square", n*n)
+
+def cal_cube(nums):
+    print("calculating cube")
+    for n in nums:
+        time.sleep(0.2)
+        print("cube", n*n*n)
+
+arr = [2,3,8,9]
+
+t = time.time();
+
+t1 = threading.Thread(target=cal_square, args=(arr,));
+t2 = threading.Thread(target=cal_cube, args=(arr,));
+
+t1.start();
+t2.start();
+
+t1.join();
+t2.join();
+
+
+
+
+
+Great observation! The reason your code with time.sleep() appears to run in parallel when using threads is because of how I/O-bound operations (like time.sleep()) interact with Python’s Global Interpreter Lock (GIL).
+
+Explanation:
+CPU-bound tasks (e.g., mathematical calculations like squaring or cubing numbers) are constrained by Python's GIL, which prevents multiple threads from executing Python bytecode at the same time. This is why your original code without time.sleep() didn't seem to run in parallel.
+
+I/O-bound tasks (e.g., file operations, network requests, or even time.sleep()) release the GIL during their execution. When you call time.sleep(), the thread releases the GIL while it’s waiting (i.e., sleeping), allowing other threads to run in parallel. This makes the code seem to run concurrently because the GIL is not actively holding up the execution of other threads.
+
+Why time.sleep() makes it work:
+When you add time.sleep(0.2), this happens:
+
+The thread calls time.sleep(), which is considered an I/O-bound operation.
+While sleeping, the GIL is released, and other threads can run during this time.
+As a result, both threads (one calculating squares and the other calculating cubes) can switch between each other while one is sleeping, leading to apparent parallelism.
+Key Points:
+Without time.sleep(): Both threads are trying to perform CPU-bound tasks, and the GIL prevents them from running in true parallel. As a result, they run sequentially, not concurrently.
+With time.sleep(): Threads release the GIL during the sleep period, which allows other threads to run. This results in visible concurrency.
+Threads vs. Processes:
+Threads: Useful when you have I/O-bound operations (e.g., waiting for data, sleep intervals).
+Processes: Necessary when you want to achieve true parallelism for CPU-bound tasks (e.g., intensive computations).
+In your example, adding time.sleep() makes it I/O-bound and therefore allows for thread-level concurrency, despite the GIL. Without it, threading doesn't improve performance for CPU-bound tasks because of the GIL.
+
+                                    
+                                    
+                                    MUlTIPROCESSING 
+                                    
+every process has its own address space (virtual memory). Thus program variables are not shared between two prcesses. You need to use interprocesses communication (IPC) techniques if you want to share data between two processes.
+
+ 
+import multiprocessing 
+
+squre_result = []
+
+def cal_square(nums): 
+    global square_result
+    for n in nums:
+        print('square'+str(n*n))
+        square_result.append(n*n)
+        
+if __name__ = "__main__":
+    arr = [2,3,8,9]
+    p1 = multiprocessing.Process(target=cal_square, args=(arr,))
+    p1.start()
+    p1.join()
+    
+    print('result' + str(square_result)) // this will print nothing, because 	 the new thread will have its own address space for square_result.
+
+
+The benefit of multiprocessing is that error or memory leak in one process won't hurt execution of another process.  
+
+
+
+
+                  SHARING DATA BETWEEN PROCESSES USNG ARRAY AND VALUE
+
+
+import multiprocessing 
+
+result = []
+
+def cal_square(nums): 
+    global square_result
+    for n in nums:
+        print('square'+str(n*n))
+        result.append(n*n)
+    print('inside process' + str(result))
+        
+if __name__ = "__main__":
+    arr = [2,3,8,9]
+    p1 = multiprocessing.Process(target=cal_square, args=(arr,))
+    
+    p1.start()
+    p1.join()
+    
+    print('outside process' + str(result)) 
+
+as discusses above it wont anything outside the process, to fix this we can use share memory through array or value, for now we will be using array. this can be done with multiprocessing queue also. 
+
+
+
+import multiprocessing 
+
+
+
+def cal_square(nums, result ): 
+    for idx, n in enumerate(nums):
+        result[idx] = n*n
+
+        
+if __name__ = "__main__":
+    arr = [2,3,8,9]
+    result = multiprocessing.Array('i', 3) // i signifies the integer type and
+    3 is the size of array. 
+    p1 = multiprocessing.Process(target=cal_square, args=(arr, result))
+    
+    p1.start()
+    p1.join()
+    
+    print('outside process' + str(result)) 
+
+  
+                    MULTIPROCESSING QUEUE
+                  
+import multiprocessing 
+
+
+
+def cal_square(nums, q ): 
+    for n in nums:
+        q.put(n*n)
+
+
+        
+if __name__ = "__main__":
+    arr = [2,3,8,9]
+    
+    q = multiprocessing.Queue() // Queue is a data structure (FIFO)
+    p1 = multiprocessing.Process(target=cal_square, args=(arr, q))
+    
+    p1.start()
+    p1.join()
+    
+    while q.empty() is False:
+         print(q.get())
+         
+Note: Multiprocessing Queue and Queue module in python is two different things. 
+
+
+Multiprocessing Queue:  import multiprocessing
+                        q = multiprocessing.Queue()
+                        Lives in shared memory
+                        Used to share data between processes. 
+
+Queue Module: import queue
+              q = queue.Queue()
+              Lives in in-process memory
+              Used to share data between threads.
+
+
+                     MULTIPROCESSING LOCK
+
+import multiprocessing
+import time
+
+def worker(lock, process_num):
+    with lock:
+        print(f"Process {process_num} has acquired the lock.")
+        time.sleep(2)  # Simulate a critical section (e.g., accessing shared resource)
+        print(f"Process {process_num} is releasing the lock.")
+
+if __name__ == "__main__":
+    lock = multiprocessing.Lock()  # Create a lock object
+    processes = []
+
+    # Create and start 5 processes
+    for i in range(5):
+        process = multiprocessing.Process(target=worker, args=(lock, i))
+        processes.append(process)
+        process.start()
+
+    # Wait for all processes to finish
+    for process in processes:
+        process.join()
+
+    print("All processes are done.")
+
+
+Key Methods of a Multiprocessing Lock:
+
+lock.acquire([blocking=True]): This method is used to acquire the lock. If blocking=True, the process waits (blocks) until the lock is available. If blocking=False, it tries to acquire the lock but proceeds without waiting if it’s unavailable.
+
+
+lock.release(): This method releases the lock, making it available to other processes. Once the process finishes using the shared resource, it should release the lock so others can proceed.
+
+Using with lock:: A cleaner way to handle locks is with the with statement, which automatically acquires and releases the lock, ensuring it is released even if an error occurs.
+
+
+
+
+
+
+
