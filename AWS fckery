@@ -1,0 +1,20 @@
+virtual private cloud in public cloud 
+cloud repatriation: process of moving data, applications, and services from a public cloud to a private cloud or on-premises data center.
+
+IAM -> (users, policies, groups), roles
+
+Roles: ![alt text](<Screenshot from 2024-11-25 13-16-17-1.png>)
+
+custom policies
+
+EC2(Elastic cloud compute)
+
+why the prefix Elastic
+it is provided to the services which can be scaled up and down 
+
+types of EC2 instances: 
+general purpos 
+compute optimized 
+memory optimized 
+storage optimized 
+accelarate optimized 
