@@ -18,3 +18,24 @@ compute optimized
 memory optimized 
 storage optimized 
 accelarate optimized 
+
+choice of region: low letancy
+
+Accessing ec2 instance from terminal: ssh -i pem_file.pem ubuntu@publick_ip (considerin you're using linux as os in the instance, ubuntu will be the default user)
+
+you'll stumble upon an error saying pem_file.pem is too open. to fix this: chmod 600 pem_file.pem 
+
+installing jenkins in ubuntu:
+i. we'll be needing java installed on the system, run: sudo apt install openjdk-11-jdk 
+
+check status of jenkins: systemctl jenkins status
+
+jenkins runs on 8080,to check: go to your browser and type: http://public_ec2_instance_password:8080, it'll be running but won't be accessible. 
+
+To make it accessible: go to security region of the instance and click on security groups, in enbound traffic rule, click on the edit button, add a new rule:
+add type as custom TCP, add port as 8080 and in source add Anywhere IPv4 
+
+
+VIRTUAL PRIVATE CLOUD
+
+how to define size of VCP: define ip address ranges, now splitting the ip range and assigning them into sub projects is called subnets. 
